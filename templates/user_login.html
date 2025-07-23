@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}"
+    />
+    <title>Login</title>
+  </head>
+  <body>
+    <h1 style="color: #002b5c; text-align: center" class="mt-5 mb-5">
+      Parking App
+    </h1>
+    <div
+      style="
+        width: 500px;
+        margin: auto;
+        text-align: center;
+        border: 2px solid black;
+        border-radius: 50px;
+        padding: 35px 25px;
+      "
+    >
+      <h3>User Login</h3>
+      <form action="" method="post">
+        <div class="row mb-4 mt-4">
+          <label for="input1" class="fw-semibold col-sm-2 col-form-label"
+            >Username</label
+          >
+          <div class="col-sm-10">
+            <input
+              required
+              name="username"
+              value="{{request.form.get('username','')}}"
+              type="text"
+              class="form-control"
+              id="input1"
+            />
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="input2" class="fw-semibold col-sm-2 col-form-label"
+            >Password</label
+          >
+          <div class="col-sm-10">
+            <input
+              required
+              name="password"
+              type="password"
+              class="form-control"
+              id="input2"
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Sign in</button>
+        <p class="mb-2">
+          Doesn't have an account? <a href="/user/sign-up">Sign Up</a>
+        </p>
+        <p>Admin Login <a href="/admin/login">Click Here</a></p>
+      </form>
+    </div>
+    {% if username_error %}
+    <script>
+      alert("Username not found");
+    </script>
+    {% endif %} {% if password_error %}
+    <script>
+      alert("Incorrect password");
+    </script>
+    {% endif %}
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  </body>
+</html>
