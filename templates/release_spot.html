@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Release Spot</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}"
+    />
+  </head>
+  <body>
+    <div
+      style="
+        width: 500px;
+        margin: auto;
+        text-align: center;
+        border: 2px solid black;
+        border-radius: 50px;
+        padding: 35px 25px;
+        margin-top: 100px;
+      "
+    >
+      <h3>Release the Parking Spot</h3>
+      <form action="/user/profile" method="post">
+        <input type="hidden" name="type" value="release-spot" />
+        <input type="hidden" name="id" value="{{reservation.id}}" />
+        <input type="hidden" name="price" value="{{price}}" />
+        <input type="hidden" name="spot_id" value="{{reservation.spot_id}}" />
+        <div class="row mb-4 mt-4">
+          <label for="input1" class="fw-semibold col-sm-4 col-form-label"
+            >Spot ID</label
+          >
+          <div class="col-sm-8">
+            <input
+              disabled
+              value="{{reservation.spot_id}}"
+              type="text"
+              class="form-control"
+              id="input1"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input2" class="fw-semibold col-sm-4 col-form-label"
+            >Vehicle No.</label
+          >
+          <div class="col-sm-8">
+            <input
+              disabled
+              value="{{reservation.vehicle_no}}"
+              name="vehicle_no"
+              type="text"
+              class="form-control"
+              id="input2"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input3" class="fw-semibold col-sm-4 col-form-label"
+            >Parking Timestamp</label
+          >
+          <div class="col-sm-8">
+            <input
+              disabled
+              value="{{reservation.parking_timestamp}}"
+              name="parking_timestamp"
+              type="text"
+              class="form-control"
+              id="input3"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input4" class="fw-semibold col-sm-4 col-form-label"
+            >Price (per hour)</label
+          >
+          <div class="col-sm-8">
+            <input
+              disabled
+              value="{{price}}"
+              type="text"
+              class="form-control"
+              id="input4"
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-warning mb-3 me-4 mt-3">
+          Release
+        </button>
+        <a class="btn btn-danger" href="/user/profile">Cancel</a>
+      </form>
+    </div>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  </body>
+</html>
