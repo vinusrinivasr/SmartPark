@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Lot</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}"
+    />
+  </head>
+  <body>
+    <div
+      style="
+        width: 500px;
+        margin: auto;
+        text-align: center;
+        border: 2px solid black;
+        border-radius: 50px;
+        padding: 35px 25px;
+        margin-top: 100px;
+      "
+    >
+      <h3>Edit Parking Lot #{{lot_data.id}}</h3>
+      <form action="" method="post">
+        <div class="row mb-4 mt-4">
+          <label for="input1" class="fw-semibold col-sm-4 col-form-label"
+            >Location</label
+          >
+          <div class="col-sm-8">
+            <input
+              required
+              name="location"
+              value="{{lot_data.location}}"
+              type="text"
+              class="form-control"
+              id="input1"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input2" class="fw-semibold col-sm-4 col-form-label"
+            >Address</label
+          >
+          <div class="col-sm-8">
+            <input
+              required
+              name="address"
+              type="text"
+              value="{{lot_data.address}}"
+              class="form-control"
+              id="input2"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input3" class="fw-semibold col-sm-4 col-form-label"
+            >Pincode</label
+          >
+          <div class="col-sm-8">
+            <input
+              required
+              name="pincode"
+              type="text"
+              value="{{lot_data.pincode}}"
+              class="form-control"
+              id="input3"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input4" class="fw-semibold col-sm-4 col-form-label"
+            >Price (per hour)</label
+          >
+          <div class="col-sm-8">
+            <input
+              required
+              name="price"
+              type="text"
+              value="{{lot_data.price}}"
+              class="form-control"
+              id="input4"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input5" class="fw-semibold col-sm-4 col-form-label"
+            >Max. Spots</label
+          >
+          <div class="col-sm-8">
+            <input
+              required
+              name="max_spots"
+              type="number"
+              value="{{lot_data.max_spots}}"
+              class="form-control"
+              id="input5"
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-warning mb-3 me-4 mt-3">
+          Update
+        </button>
+        <a href="/admin/dashboard" class="btn btn-danger">Cancel</a>
+      </form>
+    </div>
+    {%if error%}
+    <script>
+      alert(
+        "Can't delete already occupied slots. Maximum spots must atleast be {{occupied}}"
+      );
+    </script>
+    {%endif%}
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  </body>
+</html>

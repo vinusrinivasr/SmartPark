@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Lots</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}"
+    />
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand fw-semibold"
+      style="background-color: #55b5fa"
+    >
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          href="/admin/dashboard"
+          style="margin-right: 50px; color: #002b5c"
+          >Welcome Admin</a
+        >
+        <div class="navbar-collapse">
+          <ul class="navbar-nav" style="margin: auto">
+            <li class="nav-item me-5">
+              <a class="nav-link" href="/admin/dashboard">Home</a>
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" href="/admin/users">Users</a>
+            </li>
+            <li class="nav-item me-5">
+              <a
+                class="nav-link bg-light"
+                aria-current="page"
+                style="
+                  border-radius: 15px;
+                  padding-right: 15px;
+                  padding-left: 15px;
+                "
+                href="/admin/search"
+                >Search</a
+              >
+            </li>
+          </ul>
+        </div>
+        <a
+          style="color: red; font-weight: bold; text-decoration: none"
+          href="/admin/log-out"
+          >Log Out</a
+        >
+      </div>
+    </nav>
+    <div
+      style="
+        display: flex;
+        border: solid 1px;
+        border-radius: 30px;
+        padding: 10px;
+        margin: 40px 20px 20px 20px;
+      "
+      class="mb-5"
+    >
+      <h4 class="m-auto">Search Parking Lots</h4>
+    </div>
+    <div class="d-flex">
+      <form action="/admin/search" method="post" class="d-flex gap-4 m-auto mb-5">
+        <select
+          name="select"
+          style="
+            height: 40px;
+            width: 200px;
+            border-radius: 15px;
+            padding: 4px;
+            text-align: center;
+          "
+        >
+          <option value="" {% if request.form.get('select') == "" %}selected{% endif %}>Select-Option</option>
+          <option value="location" {% if request.form.get('select') == "location" %}selected{% endif %}>Location</option>
+          <option value="pincode" {% if request.form.get('select') == "pincode" %}selected{% endif %}>Pincode</option>
+        </select>
+        <input
+        required
+          name="search"
+          value="{{request.form.get('search','')}}"
+          type="search"
+          style="
+            height: 40px;
+            width: 400px;
+            text-align: center;
+            border-radius: 15px;
+          "
+        />
+        <button class="btn btn-primary" type="submit">Search</button>
+      </form>
+    </div>
+    {%if parking_lots%}
+    <div class="d-flex justify-content-center flex-wrap">
+      {% for lot in parking_lots%}
+      <div class="card ms-3 me-3 mb-3" style="width: 18rem">
+        <div class="card-body">
+          <h5 class="card-title" style="text-align: center">
+            Parking Lot #{{lot.id}}
+          </h5>
+          <h6 style="text-align: center; color: #146eae">
+            {{address[lot.id]}}
+          </h6>
+          <h6 style="text-align: center">
+            <a
+              style="text-decoration: none; color: rgb(222, 135, 28)"
+              href="/admin/edit-lot/{{lot.id}}"
+              >Edit</a
+            >
+            |
+            <a
+              style="text-decoration: none; color: rgb(230, 37, 37)"
+              href="/admin/delete-lot/{{lot.id}}"
+              >Delete</a
+            >
+          </h6>
+          <h6
+            class="card-subtitle mb-2"
+            style="color: green; text-align: center"
+          >
+            Occupied: {{occupied[lot.id]}}/{{lot.max_spots}}
+          </h6>
+          <div class="d-flex flex-wrap justify-content-center">
+            {%for spot in parking_spots[lot.id]%} {%if spot.status=='O'%}
+            <div
+              class="m-1 d-flex"
+              style="
+                border: 3px solid #55b5fa;
+                border-radius: 15px;
+                width: 50px;
+                height: 50px;
+                text-align: center;
+                justify-content: center;
+                background-color: rgb(250, 115, 115);
+                align-items: center;
+              "
+            >
+              <a
+                class="m-0 text-decoration-none fw-semibold"
+                href="/admin/view-spot/{{spot.id}}"
+                style="color: black; font-size: 20px"
+                >{{spot.status}}</a
+              >
+            </div>
+            {%elif spot.status=='A'%}
+            <div
+              class="d-flex m-1"
+              style="
+                border: 3px solid #55b5fa;
+                border-radius: 15px;
+                width: 50px;
+                height: 50px;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+                background-color: rgb(81, 250, 81);
+              "
+            >
+              <a
+                class="m-0 text-decoration-none fw-semibold"
+                href="/admin/view-spot/{{spot.id}}"
+                style="color: black; font-size: 20px"
+                >{{spot.status}}</a
+              >
+            </div>
+            {%endif%} {%endfor%}
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+    {%elif request.form.get('select')==''%}
+    <div class="d-flex">
+      <h4 class="m-auto">Select an option</h4>
+    </div>
+    {%elif parking_lots==[]%}
+    <div class="d-flex">
+      <h4 class="m-auto">No Search Results found</h4>
+    </div>
+    {%endif%}
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  </body>
+</html>

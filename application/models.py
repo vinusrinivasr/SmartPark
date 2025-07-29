@@ -31,4 +31,5 @@ class Reservation(db.Model):
     user_id=db.Column(db.Integer,db.ForeignKey("user.user_id"),nullable=False)
     parking_timestamp=db.Column(db.DateTime,nullable=False)
     leaving_timestamp=db.Column(db.DateTime)
-    parking_cost=db.Column(db.Float,nullable=False)
+    parking_cost=db.Column(db.Float)
+    vehicle_no=db.Column(db.String,nullable=False)

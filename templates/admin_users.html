@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}"
+    />
+    <title>Registered Users</title>
+    <style>
+      th,
+      td,
+      table {
+        border: 2px solid gray;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand fw-semibold"
+      style="background-color: #55b5fa"
+    >
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          href="/admin/dashboard"
+          style="margin-right: 50px; color: #002b5c"
+          >Welcome Admin</a
+        >
+        <div class="navbar-collapse">
+          <ul class="navbar-nav" style="margin: auto">
+            <li class="nav-item me-5">
+              <a class="nav-link" href="/admin/dashboard">Home</a>
+            </li>
+            <li class="nav-item me-5">
+              <a
+                class="nav-link bg-light"
+                aria-current="page"
+                style="
+                  border-radius: 15px;
+                  padding-right: 15px;
+                  padding-left: 15px;
+                "
+                href="/admin/users"
+                >Users</a
+              >
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" href="/admin/search">Search</a>
+            </li>
+          </ul>
+        </div>
+        <a
+          style="color: red; font-weight: bold; text-decoration: none"
+          href="/admin/log-out"
+          >Log Out</a
+        >
+      </div>
+    </nav>
+    <div
+      style="
+        display: flex;
+        border: solid 1px;
+        border-radius: 30px;
+        padding: 10px;
+        margin: 40px 20px 20px 20px;
+      "
+    >
+      <h4 style="margin: auto">Registered Users</h4>
+    </div>
+    {% if users %}
+    <table
+      style="
+        width: calc(100% - 100px);
+        margin: 0px 50px 50px 50px;
+        text-align: center;
+      "
+    >
+      <thead>
+        <tr style="font-size: large; background-color: #aed8f6">
+          <th>ID</th>
+          <th>Username</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Pincode</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{user.user_id}}</td>
+          <td>{{user.username}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.address}}</td>
+          <td>{{user.pincode}}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+    {%else%}
+    <h5>No records found</h5>
+    {% endif %}
+
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  </body>
+</html>
