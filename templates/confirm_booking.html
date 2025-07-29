@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirm Spot Booking</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}"
+    />
+  </head>
+  <body>
+    <div
+      style="
+        width: 500px;
+        margin: auto;
+        text-align: center;
+        border: 2px solid black;
+        border-radius: 50px;
+        padding: 35px 25px;
+        margin-top: 125px;
+      "
+    >
+      <h3>Confirm Spot Booking</h3>
+      <form action="/user/booking-success" method="post">
+        <input type="hidden" value="{{lot_data.id}}" name="lot_id" />
+        <input type="hidden" value="{{spot_id}}" name="spot_id" />
+        <div class="row mb-4 mt-4">
+          <label for="input" class="fw-semibold col-sm-3 col-form-label"
+            >Lot ID</label
+          >
+          <div class="col-sm-9">
+            <input
+              disabled
+              required
+              type="text"
+              class="form-control"
+              id="input"
+              value="{{lot_data.id}}"
+            />
+          </div>
+        </div>
+        <div class="row mb-4 mt-4">
+          <label for="input1" class="fw-semibold col-sm-3 col-form-label"
+            >Spot ID</label
+          >
+          <div class="col-sm-9">
+            <input
+              disabled
+              required
+              type="text"
+              class="form-control"
+              id="input1"
+              value="{{spot_id}}"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input2" class="fw-semibold col-sm-3 col-form-label"
+            >Username</label
+          >
+          <div class="col-sm-9">
+            <input
+              disabled
+              required
+              type="text"
+              class="form-control"
+              id="input2"
+              value="{{username}}"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input3" class="fw-semibold col-sm-3 col-form-label"
+            >Address</label
+          >
+          <div class="col-sm-9">
+            <input
+              disabled
+              required
+              name="address"
+              type="text"
+              class="form-control"
+              id="input3"
+              value="{{lot_data.address}}"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input4" class="fw-semibold col-sm-3 col-form-label"
+            >Vehicle No.</label
+          >
+          <div class="col-sm-9">
+            <input
+              required
+              name="vehicle_no"
+              type="text"
+              class="form-control"
+              id="input4"
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success mb-3 me-5 mt-3">
+          Confirm
+        </button>
+        <a href="/user/book-spot" class="btn btn-danger mb-3 mt-3"> Cancel </a>
+      </form>
+    </div>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book a spot</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}"
+    />
+    <style>
+      th,
+      td,
+      table {
+        border: 2px solid gray;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand fw-semibold"
+      style="background-color: #55fa86"
+    >
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          href="/user/profile"
+          style="margin-right: 50px; color: #014b17"
+          >Welcome, {{user_data.name}}</a
+        >
+        <div class="navbar-collapse">
+          <ul class="navbar-nav" style="margin: auto">
+            <li class="nav-item me-5">
+              <a class="nav-link" href="/user/profile">Home</a>
+            </li>
+            <li class="nav-item me-5">
+              <a
+                class="nav-link bg-light"
+                aria-current="page"
+                style="
+                  border-radius: 15px;
+                  padding-right: 15px;
+                  padding-left: 15px;
+                "
+                href="/user/book-spot"
+                >Book Spot</a
+              >
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" href="/user/edit-profile">Edit Profile</a>
+            </li>
+          </ul>
+        </div>
+        <a
+          style="color: red; font-weight: bold; text-decoration: none"
+          href="/user/log-out"
+          >Log Out</a
+        >
+      </div>
+    </nav>
+    <div
+      style="
+        display: flex;
+        border: solid 1px;
+        border-radius: 30px;
+        padding: 10px;
+        margin: 40px 20px 20px 20px;
+      "
+    >
+      <h4 style="margin: auto">Book a Parking Spot</h4>
+    </div>
+    <form action="" method="post" class="d-flex mt-5">
+      <div class="m-auto d-flex gap-3">
+        <h5 class="fw-normal mt-1">
+          Search parking lots by <b class="fw-semibold">Location/ Pin Code</b>:
+        </h5>
+        <input
+          type="text"
+          name="search"
+          style="border-radius: 10px; padding: 5px; text-align: center"
+        />
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+    {% if reqd_data %}
+    <div
+      style="
+        display: flex;
+        border: solid 1px;
+        border-radius: 30px;
+        padding: 10px;
+        margin: 40px 200px 20px 200px;
+      "
+    >
+      <h4 style="margin: auto">Search results for '{{data}}'</h4>
+    </div>
+    <table
+      style="
+        width: calc(100% - 100px);
+        margin: 0px 50px 50px 50px;
+        text-align: center;
+      "
+    >
+      <thead>
+        <tr style="font-size: large; background-color: #aed8f6">
+          <th>ID</th>
+          <th>Address</th>
+          <th>Price (per hour)</th>
+          <th>Availability</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in reqd_data %}
+        <tr>
+          <td>{{data.id}}</td>
+          <td>{{data.address}}</td>
+          <td>Rs. {{data.price}}</td>
+          <td>{{availability[data.id]}}</td>
+          {%if availability[data.id]==0%}
+          <td><a class="btn btn-danger">Spots Full</a></td>
+          {%else%}
+          <td>
+            <form action="/user/confirm-booking" method="post">
+              <button
+                name="button"
+                value="{{data.id}}"
+                type="submit"
+                class="btn btn-success"
+              >
+                Book
+              </button>
+            </form>
+          </td>
+          {%endif%}
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+    {% endif %}
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  </body>
+</html>

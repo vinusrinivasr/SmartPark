@@ -58,6 +58,97 @@ def admin_login():
         return redirect('/admin/dashboard')
     return render_template('admin_login.html',error=False)
 
+@app.route('/user/profile',methods=['GET','POST'])
+def user_profile():
+    if 'user' not in session:
+        return redirect('/user/login')
+    user_data=User.query.filter(User.username==session.get('user')).first()
+    if request.method=='POST':
+        data=request.form
+        if data['type']=='edit-profile':
+            user_data.name=data['name']
+            user_data.address=data['address']
+            user_data.pincode=data['pincode']
+            db.session.commit()
+        elif data['type']=='release-spot':
+            reservation=Reservation.query.get(data['id'])
+            reservation.leaving_timestamp=datetime.now()
+            total_cost=(reservation.leaving_timestamp-reservation.parking_timestamp).total_seconds()*float(data['price'])/3600
+            reservation.parking_cost=round(total_cost,2)
+            spot_data=ParkingSpot.query.get(data['spot_id'])
+            spot_data.status='A'
+            db.session.commit()
+    reservations=Reservation.query.filter(Reservation.user_id==user_data.user_id).all()
+    location={}
+    for reservation in reservations:
+        lot_id=ParkingSpot.query.filter(ParkingSpot.id==reservation.spot_id).first().lot_id
+        location[reservation.id]=ParkingLot.query.get(lot_id).location
+    return render_template('user_profile.html',user_data=user_data,reservations=reservations,location=location)
+
+@app.route('/user/release-spot',methods=['POST'])
+def release_spot():
+    if 'user' not in session:
+        return redirect('/user/login')
+    if request.method=='POST':
+        id=request.form['id']
+        reservation=Reservation.query.get(id)
+        lot_id=ParkingSpot.query.get(reservation.spot_id).lot_id
+        price=ParkingLot.query.get(lot_id).price
+        return render_template('release_spot.html',reservation=reservation,price=price)
+
+@app.route('/user/change-password',methods=['GET'])
+def change_password():
+    if 'user' not in session:
+        return redirect('/user/login')
+    return render_template('change_password.html')
+
+@app.route('/user/book-spot',methods=['GET','POST'])
+def book_spot():
+    if 'user' not in session:
+        return redirect('/user/login')
+    user_data=User.query.filter(User.username==session.get('user')).first()
+    if request.method=='POST':
+        data=request.form['search']
+        reqd_data=ParkingLot.query.filter((ParkingLot.location.ilike(f"%{data}%")) | (ParkingLot.pincode.ilike(f"%{data}%"))).all()
+        availability={}
+        for i in reqd_data:
+            availability[i.id]=(len(ParkingSpot.query.filter((ParkingSpot.lot_id==i.id) & (ParkingSpot.status=='A')).all()))
+        return render_template('book_spot.html',user_data=user_data,reqd_data=reqd_data,availability=availability,data=data)
+    return render_template('book_spot.html',user_data=user_data)
+
+@app.route('/user/confirm-booking',methods=['GET','POST'])
+def confirm_booking():
+    if 'user' not in session:
+        return redirect('/user/login')
+    if request.method=='POST':
+        lot_id=request.form['button']
+        lot_data=ParkingLot.query.get(lot_id)
+        spot_id=ParkingSpot.query.filter((ParkingSpot.lot_id==lot_id) & (ParkingSpot.status=='A')).first().id
+        return render_template('confirm_booking.html',lot_data=lot_data,username=session['user'],spot_id=spot_id)
+    return '',404
+
+@app.route('/user/booking-success',methods=['GET','POST'])
+def booking_success():
+    if 'user' not in session:
+        return redirect('/user/login')
+    if request.method=='POST':
+        data=request.form
+        user_id=User.query.filter(User.username==session['user']).first().user_id
+        price=ParkingLot.query.get(data['lot_id']).price
+        new_reservation=Reservation(spot_id=data['spot_id'],user_id=user_id,parking_timestamp=datetime.now(),parking_cost=price,vehicle_no=data['vehicle_no'])
+        db.session.add(new_reservation)
+        spot_data=ParkingSpot.query.get(data['spot_id'])
+        spot_data.status='O'
+        db.session.commit()
+        return render_template('booking_success.html')
+
+@app.route('/user/edit-profile',methods=['GET'])
+def edit_profile():
+    if 'user' not in session:
+        return redirect('/user/login')
+    user_data=User.query.filter(User.username==session.get('user')).first()
+    return render_template('edit_profile.html',user_data=user_data)
+
 @app.route('/admin/dashboard',methods=['GET','POST'])
 def admin_home():
     if 'admin' not in session:
