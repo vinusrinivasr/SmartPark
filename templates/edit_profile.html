@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css')}}"
+    />
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand fw-semibold"
+      style="background-color: #55fa86"
+    >
+      <div class="container-fluid">
+        <a
+          class="navbar-brand"
+          href="/user/profile"
+          style="margin-right: 50px; color: #014b17"
+          >Welcome, {{user_data.name}}</a
+        >
+        <div class="navbar-collapse">
+          <ul class="navbar-nav" style="margin: auto">
+            <li class="nav-item me-5">
+              <a class="nav-link" href="/user/profile">Home</a>
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" href="/user/book-spot">Book Spot</a>
+            </li>
+            <li class="nav-item me-5">
+              <a
+                class="nav-link bg-light"
+                aria-current="page"
+                style="
+                  border-radius: 15px;
+                  padding-right: 15px;
+                  padding-left: 15px;
+                "
+                href="/user/edit-profile"
+                >Edit Profile</a
+              >
+            </li>
+          </ul>
+        </div>
+        <a
+          style="color: red; font-weight: bold; text-decoration: none"
+          href="/user/log-out"
+          >Log Out</a
+        >
+      </div>
+    </nav>
+    <div
+      style="
+        width: 500px;
+        margin: auto;
+        text-align: center;
+        border: 2px solid black;
+        border-radius: 50px;
+        padding: 35px 25px;
+        margin-top: 75px;
+      "
+    >
+      <h3>Edit Profile</h3>
+      <form action="/user/profile" method="post">
+        <input type="hidden" name="type" value="edit-profile" />
+        <div class="row mb-4 mt-4">
+          <label for="input1" class="fw-semibold col-sm-3 col-form-label"
+            >Name</label
+          >
+          <div class="col-sm-9">
+            <input
+              required
+              name="name"
+              type="text"
+              class="form-control"
+              id="input1"
+              value="{{user_data.name}}"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input2" class="fw-semibold col-sm-3 col-form-label"
+            >Address</label
+          >
+          <div class="col-sm-9">
+            <input
+              required
+              name="address"
+              type="text"
+              class="form-control"
+              id="input2"
+              value="{{user_data.address}}"
+            />
+          </div>
+        </div>
+        <div class="row mb-4">
+          <label for="input3" class="fw-semibold col-sm-3 col-form-label"
+            >Pincode</label
+          >
+          <div class="col-sm-9">
+            <input
+              required
+              name="pincode"
+              type="text"
+              class="form-control"
+              id="input3"
+              value="{{user_data.pincode}}"
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-warning mb-3 me-5 mt-3">
+          Edit
+        </button>
+        <a href="/user/profile" class="btn btn-danger mb-3 mt-3"> Cancel </a>
+      </form>
+      <a href="/user/change-password">Change Password</a>
+    </div>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  </body>
+</html>
