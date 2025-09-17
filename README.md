@@ -74,4 +74,4 @@ Go to [http://localhost:5000] and you must see the app running
 
 
 ## 👥 Contributors
-- **Vinu Srinivas R (24f1001669)** — Developer
+- **Vinu Srinivas R** — Developer
