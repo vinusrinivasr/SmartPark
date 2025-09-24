@@ -1,4 +1,4 @@
-# Parking App
+# SmartPark
 This is a web app designed to streamline 4-wheeler parking management. It features separate user and admin roles, allowing users to sign up, log in, and manage their parking reservations, while the admin can manage all parking lots, manage users, and perform lot searches efficiently.
 
 
